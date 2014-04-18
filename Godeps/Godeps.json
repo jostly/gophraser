@@ -1,0 +1,5 @@
+{
+	"ImportPath": "github.com/jostly/gophraser",
+	"GoVersion": "go1.2.1",
+	"Deps": []
+}
