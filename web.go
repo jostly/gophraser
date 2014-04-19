@@ -1,67 +1,49 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
-	"strings"
-	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/jostly/gophraser/dict"
 )
 
 var (
-	animals    = readFile("words/animals.txt")
-	adjectives = readFile("words/adjectives.txt")
+	animals    = dict.NewDictionary("words/animals.txt")
+	adjectives = dict.NewDictionary("words/adjectives.txt")
 )
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
-	http.HandleFunc("/", phraser)
-	log.Println("listening...")
+	r := mux.NewRouter()
+	r.HandleFunc("/random", randomPhraser)
+	r.HandleFunc("/{letter:[a-wy-z]}", letterPhraser)
+	r.HandleFunc("/", alliterativePhraser)
+	http.Handle("/", r)
 
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	port := os.Getenv("PORT")
+	if len(port) == 0 {
+		port = "5000"
+	}
+	log.Println("listening on port " + port)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func phraser(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(res, adjectives.OneOf()+" "+animals.OneOf())
+func alliterativePhraser(res http.ResponseWriter, req *http.Request) {
+	adj := adjectives.OneRandom()
+	fmt.Fprintln(res, adj+" "+animals.OneStartingWith(adj[:1]))
 }
 
-type Dictionary []string
-
-func (d Dictionary) Contains(s string) bool {
-	for _, value := range d {
-		if value == s {
-			return true
-		}
-	}
-	return false
+func letterPhraser(res http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	letter := vars["letter"]
+	fmt.Fprintln(res, adjectives.OneStartingWith(letter)+" "+animals.OneStartingWith(letter))
 }
 
-func (d Dictionary) OneOf() string {
-	return d[rand.Intn(len(d))]
-}
-
-func readFile(filename string) Dictionary {
-	result := Dictionary{}
-
-	file, error := os.Open(filename)
-	if error != nil {
-		log.Fatal(error)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		line := strings.ToLower(scanner.Text())
-		if len(line) > 1 && !result.Contains(line) {
-			result = append(result, line)
-		}
-	}
-	return result
+func randomPhraser(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprintln(res, adjectives.OneRandom()+" "+animals.OneRandom())
 }
