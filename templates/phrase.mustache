@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>Go|Phraser</title>
+        <style>
+            body {
+                font-family: Helvetica, Arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 style="text-align: center">{{phrase}}</h1>
+        <p style="text-align: center; font-size: 10pt">
+            <a href="/">alliterative phrase</a> | <a href="/random">random phrase</a> | <a href="/a">phrase starting with a specific letter (try different ones)</a>
+            <br>
+            <br>
+            Made with <a href="http://golang.org">Go</a>. Source and more information available <a href="http://github.com/jostly/gophraser">on GitHub</a>.
+            <br>
+            <br>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-text="My next version will be named '{{phrase}}'" data-via="jostly" data-hashtags="phraser">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </p>
+    </body>
+</html>

@@ -8,6 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jostly/gophraser/dict"
+	"github.com/jostly/gophraser/response"
 )
 
 var (
@@ -35,15 +36,19 @@ func main() {
 
 func alliterativePhraser(res http.ResponseWriter, req *http.Request) {
 	adj := adjectives.OneRandom()
-	fmt.Fprintln(res, adj+" "+animals.OneStartingWith(adj[:1]))
+	phrase := response.Phrase{adj, animals.OneStartingWith(adj[:1])}
+
+	fmt.Fprintln(res, response.BuildResponse(req, phrase, res))
 }
 
 func letterPhraser(res http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	letter := vars["letter"]
-	fmt.Fprintln(res, adjectives.OneStartingWith(letter)+" "+animals.OneStartingWith(letter))
+	phrase := response.Phrase{adjectives.OneStartingWith(letter), animals.OneStartingWith(letter)}
+	fmt.Fprintln(res, response.BuildResponse(req, phrase, res))
 }
 
 func randomPhraser(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(res, adjectives.OneRandom()+" "+animals.OneRandom())
+	phrase := response.Phrase{adjectives.OneRandom(), animals.OneRandom()}
+	fmt.Fprintln(res, response.BuildResponse(req, phrase, res))
 }
