@@ -9,6 +9,11 @@
 		{
 			"ImportPath": "github.com/gorilla/mux",
 			"Rev": "9ede152210fa25c1377d33e867cb828c19316445"
+		},
+		{
+			"ImportPath": "github.com/hoisie/mustache",
+			"Comment": "0.0.1-9-ge3ee57d",
+			"Rev": "e3ee57d17a0b1cd59bb72d4b6c24aefc38a6d4ac"
 		}
 	]
 }
