@@ -46,6 +46,9 @@ Heroku deploy notes
 ===================
 
 To deploy on Heroku, you need to create the app with a buildpack:
+
 `heroku create -b https://github.com/kr/heroku-buildpack-go.git`
+
 Then push to heroku like always:
+
 `git push heroku master`
