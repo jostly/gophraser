@@ -41,3 +41,11 @@ Phrase starting with specific letter
 Each word is randomly chosen among those starting with the specified letter. Access at URL `/{letter}`, example: http://gophraser.herokuapp.com/p
 
 There are currently no animals or adjectives starting with the letter x, so the service will not accept that as a starting letter.
+
+Heroku deploy notes
+===================
+
+To deploy on Heroku, you need to create the app with a buildpack:
+`heroku create -b https://github.com/kr/heroku-buildpack-go.git`
+Then push to heroku like always:
+`git push heroku master`
